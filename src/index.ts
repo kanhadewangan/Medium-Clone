@@ -3,7 +3,10 @@ import { Prisma } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bodyParser from "body-parser";
+import dotenv from 'dotenv';
+dotenv.config();
 const app = express();
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -45,7 +48,7 @@ app.post("/api/signup", async (req: any, res: any) => {
     .catch((error) => {
       console.log(error);
     });
-  const token = jwt.sign({ id: email }, "secretkey");
+  const token = jwt.sign({ id: email },  process.env.JWT_SECRATE as string, );
   res.json({
     message: "User created successfully",
     token: token,
