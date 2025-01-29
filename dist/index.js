@@ -16,7 +16,11 @@ const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const cors_1 = __importDefault(require("cors"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
@@ -54,7 +58,7 @@ app.post("/api/signup", (req, res) => __awaiter(void 0, void 0, void 0, function
         .catch((error) => {
         console.log(error);
     });
-    const token = jsonwebtoken_1.default.sign({ id: email }, "secretkey");
+    const token = jsonwebtoken_1.default.sign({ id: email }, process.env.JWT_SECRATE);
     res.json({
         message: "User created successfully",
         token: token,
@@ -63,7 +67,8 @@ app.post("/api/signup", (req, res) => __awaiter(void 0, void 0, void 0, function
 app.put("/api/user", (req, res) => {
     const { id, name, email, password } = req.body;
     const prisma = new client_1.PrismaClient();
-    let user = prisma.user.update({
+    let user = prisma.user
+        .update({
         where: {
             id: id,
         },
@@ -72,7 +77,13 @@ app.put("/api/user", (req, res) => {
             email: email,
             password: password,
         },
-    }).then((data) => { res.send("User updated successfully"); }).catch((error) => { console.log(error); });
+    })
+        .then((data) => {
+        res.send("User updated successfully");
+    })
+        .catch((error) => {
+        console.log(error);
+    });
 });
 app.delete("/api", (req, res) => {
     res.send("Delete request");
@@ -81,7 +92,8 @@ app.delete("/api", (req, res) => {
 app.put("/api/blog", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, title, content } = req.body;
     const prisma = new client_1.PrismaClient();
-    let user = yield prisma.post.update({
+    let user = yield prisma.post
+        .update({
         where: {
             id: id,
             userId: id,
@@ -90,7 +102,13 @@ app.put("/api/blog", (req, res) => __awaiter(void 0, void 0, void 0, function* (
             title: title,
             content: content,
         },
-    }).then((data) => { res.send("Post updated successfully"); }).catch((error) => { console.log(error); });
+    })
+        .then((data) => {
+        res.send("Post updated successfully");
+    })
+        .catch((error) => {
+        console.log(error);
+    });
 }));
 app.post("/api/blog", (req, res) => {
     const { id, title, content } = req.body;
@@ -134,13 +152,16 @@ app.get("/api/blog", (req, res) => __awaiter(void 0, void 0, void 0, function* (
 app.delete("/api/blog", (req, res) => {
     const { id, userId } = req.body;
     const prisma = new client_1.PrismaClient();
-    const user = prisma.user.deleteMany({
+    const user = prisma.user
+        .deleteMany({
         where: {
             id: id,
-        }
-    }).then(() => {
+        },
+    })
+        .then(() => {
         res.send("User deleted successfully");
-    }).catch((error) => {
+    })
+        .catch((error) => {
         console.log(error);
     });
 });

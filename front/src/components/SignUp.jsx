@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Login from "./login";
 const SignUp = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <div>
       <div className="w-screen h-full px-20 m-19 flex flex-row  ml-5">
@@ -20,17 +23,20 @@ const SignUp = () => {
               <h1 className="py-1 font-semibold text-md">Username</h1>
               <input
                 type="text"
+                onChange={(e) => setUsername(e.target.value)}
                 placeholder="  Username"
                 className=" h-10 w-[50vh] rounded-md border-[1px]"
               />
               <h1 className="py-1 font-semibold text-md">Email</h1>
               <input
+              onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="Email"
                 className=" h-10 w-[50vh] rounded-md border-[1px]"
               />
               <h1 className="py-1 font-semibold text-md"> Password</h1>
               <input
+              onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="  Password"
                 className=" h-10 w-[50vh] rounded-md border-[1px]"
