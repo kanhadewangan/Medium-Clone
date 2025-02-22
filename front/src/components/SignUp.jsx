@@ -1,10 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Login from "./login";
+import { useState, useRef } from "react";
+import axios from "axios";
+
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  function handleSubmit(e) {
+    e.preventDefault();
+    axios
+      .post("http://localhost:3000/api/signup", {
+        name: username,
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <div>
       <div className="w-screen h-full px-20 m-19 flex flex-row  ml-5">
@@ -19,7 +37,7 @@ const SignUp = () => {
             </Link>
           </div>
           <div className=" flex justify-center items-center h-70    w-full">
-            <form>
+            <form ref={(e)=>{e}} className="w-full">
               <h1 className="py-1 font-semibold text-md">Username</h1>
               <input
                 type="text"
@@ -43,7 +61,9 @@ const SignUp = () => {
               />
 
               <div className="flex  items-center  mt-5 text-white">
-                <button className="bg-black w-[50vh]  text-white font-semibold py-2 px-4 rounded-md">
+                <button  onClick={()=>{
+                  handleSubmit()
+                }} className="bg-black w-[50vh]  text-white font-semibold py-2 px-4 rounded-md">
                   Sign-Up
                 </button>
               </div>
