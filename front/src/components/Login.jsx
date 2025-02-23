@@ -37,8 +37,8 @@ const Login = () => {
               />
               <br />
               <button
-                onClick={() => {
-                  axios
+                onClick={ async () => {
+                  await axios
                     .post("http://localhost:3000/api/singup")
                     .then((email, password) => {
                       email = username;
